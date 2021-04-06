@@ -7,8 +7,10 @@ const project = new AwsCdkTypeScriptApp({
   name: 'auto-updater',
   cdkDependencies: [
     '@aws-cdk/aws-lambda',
+    '@aws-cdk/aws-lambda-event-sources',
     '@aws-cdk/aws-lambda-nodejs',
     '@aws-cdk/aws-secretsmanager',
+    '@aws-cdk/aws-sns',
   ],
   cdkVersionPinning: true,
   devDeps: ['esbuild', 'eslint'],

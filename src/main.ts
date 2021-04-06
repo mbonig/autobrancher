@@ -3,6 +3,8 @@ import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
 import * as path from 'path';
 import { LayerVersion, Runtime } from '@aws-cdk/aws-lambda';
 import { Secret } from '@aws-cdk/aws-secretsmanager';
+import { Topic } from '@aws-cdk/aws-sns';
+import { SnsEventSource } from '@aws-cdk/aws-lambda-event-sources';
 
 interface AutoBrancherStackProps extends StackProps {
   /**
@@ -16,6 +18,11 @@ interface AutoBrancherStackProps extends StackProps {
    * The SSH repository URL that is cloned, branched, and pushed back.
    */
   readonly repository: string;
+
+  /**
+   * The SNS Topic arn to subscribe to for CDK construct publishing messages
+   */
+  readonly topicArn: string;
 }
 
 export class AutoBrancherStack extends Stack {
@@ -40,6 +47,8 @@ export class AutoBrancherStack extends Stack {
     });
     secret.grantRead(lambda);
     lambda.addLayers(LayerVersion.fromLayerVersionArn(this, 'GitLayer', layerVersionArn));
+    const topic = Topic.fromTopicArn(this, 'ConstructPublishedListener', props.topicArn);
+    lambda.addEventSource(new SnsEventSource(topic));
   }
 }
 
@@ -54,6 +63,7 @@ const app = new App();
 new AutoBrancherStack(app, 'auto-brancher', {
   env: devEnv,
   repository: 'git@github.com:mbonig/rds-tools.git',
+  topicArn: 'arn:aws:sns:us-east-1:536309290949:cdk-published-listener-cdkpublishedtopicD5C468C1-XAIU6DSBYOYQ',
 });
 
 app.synth();

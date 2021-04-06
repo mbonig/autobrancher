@@ -10,7 +10,19 @@ const {
 } = process.env;
 export const handler = async (event: any) => {
   console.log(JSON.stringify(event, null, 2));
-  const { version } = event;
+  if (event?.Records[0]?.Sns?.Message) {
+    event = JSON.parse(event?.Records[0]?.Sns?.Message);
+  }
+
+  const {
+    name,
+    version,
+  } = event; // {"name":"@aws-cdk/core","version":"1.97.0","url":"https://awscdk.io/packages/@aws-cdk/core@1.97.0/"}
+
+  if (name !== '@aws-cdk/core') {
+    console.info('Ignoring the publishing of construct, as it\'s not the CDK Core');
+    return;
+  }
   if (!version) {
     console.error('You gotta supply an event.version');
     return;
@@ -53,20 +65,21 @@ export const handler = async (event: any) => {
       ...process.env,
       GIT_SSH_COMMAND,
     });
+    console.log('Cloning repo');
     await git.clone(repository!);
     await git.cwd(clonedPath);
 
     const branchName = `bump/${version}`; // this should be replaced with a prop and existing as default
 
+    console.log(`Creating new branch ${branchName}`);
     await git.checkoutLocalBranch(branchName);
+    console.log('Pushing new branch');
     await git.push('origin', branchName);
-
+    console.log('Branch pushed!');
   } catch (err) {
     console.error('An error happened:', err);
     throw err;
   } finally {
     fs.rmdirSync(workDir, { recursive: true });
   }
-
-
 };
