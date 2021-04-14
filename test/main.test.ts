@@ -1,6 +1,6 @@
 import '@aws-cdk/assert/jest';
 import { App } from '@aws-cdk/core';
-import { AutoBrancherStack } from '../src/main';
+import { AutoBrancherStack } from '../src/AutoBrancherStack';
 
 test('Snapshot', () => {
   const app = new App();
