@@ -2649,9 +2649,9 @@ es5-ext@0.8.x:
   integrity sha1-q6jZ4ZQ6iVrJaDemKjmz9V7NlKs=
 
 esbuild@^0.11.5:
-  version "0.11.5"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.11.5.tgz#25b18a2ff2fb9580683edce26a48f64c08c2f2df"
-  integrity sha512-aRs6jAE+bVRp1tyfzUugAw1T/Y0Fwzp4Z2ROikF3h+UifoD5QlEbEYQGc6orNnnSIRhWR5VWBH7LozlAumaLHg==
+  version "0.11.18"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.11.18.tgz#b587ec9e84d2e291b545e3c6342b5b703fd009cb"
+  integrity sha512-KD7v4N9b5B8bxPUNn/3GA9r0HWo4nJk3iwjZ+2zG1ffg+r8ig+wqj7sW6zgI6Sn4/B2FnbzqWxcAokAGGM5zwQ==
 
 escalade@^3.1.1:
   version "3.1.1"
